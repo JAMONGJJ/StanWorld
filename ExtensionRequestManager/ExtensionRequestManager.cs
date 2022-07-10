@@ -54,50 +54,6 @@ namespace stanworld
             return processingRequest;
         }
 
-        #region Extension request chain
-        public ExtensionRequestManager(RoomTransitionInfo.PacketRequestContainer _actions, Action in_callback = null)
-        {
-            requests = _actions;
-            callBack = in_callback;
-
-            DoProcess();
-        }
-
-        private void DoProcess()
-        {
-            if (false == DoCheckEnd())
-            {
-                DoRequest();
-            }
-        }
-
-        private bool DoCheckEnd()
-        {
-            if (requests.Count == 0)
-            {
-                callBack?.Invoke();
-                currentRequestCMD = string.Empty;
-                ServerInstance.Instance.checkExtensionResponse = null;
-                return true;
-            }
-            return false;
-        }
-
-        private void DoRequest()
-        {
-            var requestInfo = requests.Dequeue();
-            currentRequestCMD = requestInfo.Item2;
-            ServerInstance.Instance.checkExtensionResponse = ExtensionResponseChain;
-            requestInfo.Item1?.Invoke();
-        }
-
-        public void ExtensionResponseChain(string cmd)
-        {
-            if (currentRequestCMD.Equals(cmd))
-                DoProcess();
-        }
-        #endregion
-
         #region Extension send
         public void ExtensionSend(PacketDataContainer data)
         {
@@ -125,7 +81,7 @@ namespace stanworld
                     PacketDataContainer = data;
                     if (PacketDataContainer.sendNextAfterResponse == false)
                     {
-                        if (PacketDataContainer.synchronized == true)    // ÆÐÅ¶À» º¸³»°í ÀÀ´äÀ» ±â´Ù·Á¾ß ÇÒ °æ¿ì, ¿©·¯°¡Áö Ã³¸®°¡ ÇÊ¿äÇÔ.
+                        if (PacketDataContainer.synchronized == true)    // ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù·ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½.
                         {
                             UIInstance.Instance.ShowUIWaitingForReceiveData();
                             waitingForServerResponse = true;
@@ -145,9 +101,9 @@ namespace stanworld
                                     throw new Exception("There is no FLAG_COMMAND in the packet!");
                                 }
 
-                                // SWPID°¡ ÀÖ´Â °æ¿ì SWPID¸¦ ÀúÀåÇÏ°í, SWPID°¡ ¾ø´Â °æ¿ì FLAG_COMMAND ÀúÀå
-                                // ¼­¹öÀÇ ÀÀ´äÀÌ ¿ÔÀ»¶§µµ ¸¶Âù°¡Áö·Î SWPID¸¦ ¸ÕÀú Á¶È¸ÇØ¼­ ±â´Ù¸®´ø ÆÐÅ¶ÀÌ ¿Â °ÇÁö Ã¼Å©ÇÔ.
-                                // CheckWaitingPacketList() ¸Þ¼Òµå È®ÀÎ.
+                                // SWPIDï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ SWPIDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, SWPIDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ FLAG_COMMAND ï¿½ï¿½ï¿½ï¿½
+                                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ SWPIDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½Ø¼ï¿½ ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½.
+                                // CheckWaitingPacketList() ï¿½Þ¼Òµï¿½ È®ï¿½ï¿½.
                                 if (packetData.Packet.ContainsKey(PacketFlagClass.STANWORLD_PACKET_ID))
                                 {
                                     WaitingPacketIDMap.Add(packetData.Packet.GetLong(PacketFlagClass.STANWORLD_PACKET_ID), packetData.listenerIndex);
@@ -184,7 +140,7 @@ namespace stanworld
                             }
                         }
                     }
-                    else    // dataHolder.sendNextAfterResponse == trueÀÏ °æ¿ì, ¹«Á¶°Ç synchronized == true·Î ¼öÇàÇÔ.
+                    else    // dataHolder.sendNextAfterResponse == trueï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ synchronized == trueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
                     {
                         UIInstance.Instance.ShowUIWaitingForReceiveData();
                         waitingForServerResponse = true;
