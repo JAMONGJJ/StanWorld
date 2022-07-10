@@ -11,75 +11,6 @@ using UnityEngine;
 
 namespace stanworld
 {
-    using EasyMobile;
-
-    namespace network
-    {
-        public partial class PacketFlagClass
-        {
-
-        }
-
-        public partial class PacketNameClass
-        {
-            public const string CREATE_ROOM_ERROR = "CREATE_ROOM_ERROR";
-            public const string PACKET_GOOH = "PACKET_GOOH";
-        }
-
-        public partial class ResponseListenerContainer
-        {
-            private void DoInitListener_RoomTransition()
-            {
-                ResponseListenerList.AddListener(PacketNameClass.PACKET_GOOH, RECEIVE_PACKET_GOOH); // Get Out Of Here
-            }
-
-            private void RECEIVE_PACKET_GOOH(SFSObject data)
-            {
-                if(GameInstance.Instance.GetCurrentState() != eStanWorldStates.Reconnection)
-                    ServerInstance.Instance.TryJoinRoom(eStanWorldStates.Partyroom, PartyMaister.PartyManagers.ChatParty.chattingInfo.StarName);
-            }
-        }
-    }
-
-    public partial class GameInstance : Singleton<GameInstance>
-    {
-        public void Send_PACKET_CHECKIN_NOTI()
-        {
-            ISFSObject so = new SFSObject();
-            ServerInstance.Instance.ExtensionSend(PacketNameClass.PACKET_CHECKIN_NOTI, so, null, true);
-        }
-
-        public void Send_PACKET_FANDOMSHOP_STATUS()
-        {
-            ISFSObject so = new SFSObject();
-            ServerInstance.Instance.ExtensionSend(PacketNameClass.PACKET_FANDOMSHOP_STATUS, so);
-        }
-
-        public void Send_PACKET_CHECK_VITAPOINTS()
-        {
-            ISFSObject so = new SFSObject();
-            ServerInstance.Instance.ExtensionSend(PacketNameClass.PACKET_CHECK_VITAPOINTS, so);
-        }
-
-        public void Send_PACKET_WORD_BLOCK_LIST()
-        {
-            ISFSObject so = new SFSObject();
-            ServerInstance.Instance.ExtensionSend(PacketNameClass.PACKET_WORD_BLOCK_LIST, so);
-        }
-
-        public void Send_PACKET_EVENT_STATUS()
-        {
-            ISFSObject so = new SFSObject();
-            ServerInstance.Instance.ExtensionSend(PacketNameClass.PACKET_EVENT_STATUS, so, null, true);
-        }
-
-        public void Send_PACKET_PARTY_ROOM_INFO()
-        {
-            ISFSObject so = new SFSObject();
-            ServerInstance.Instance.ExtensionSend(PacketNameClass.PACKET_PARTY_ROOM_INFO, so);
-        }
-    }
-
     public enum RoomType
     {
         None = -1,
@@ -211,7 +142,7 @@ namespace stanworld
                         DoSetLastPosition();
                         BeforeLeaveRoom(currentRoomInfo.myRoomType);
                     }
-                    else    // ·Îºñ ÃÖÃÊ ÁøÀÔ(LoginState, CreateCharacterState) -> No need to Leave room, Just Join room.
+                    else    // ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(LoginState, CreateCharacterState) -> No need to Leave room, Just Join room.
                     {
                         FirstJoinStanWorld();
                         LeaveRoomCompleted = true;
@@ -535,7 +466,7 @@ namespace stanworld
 
         private void AfterPacketsReceived_JoinLobby()
         {
-            GameInstance.Instance.Send_PACKET_CHECKIN_NOTI();   // ¼­¹ö¿¡¼­ °æ¿ì¿¡ µû¶ó ÀÀ´äÀÌ ¾È ¿Ã ¼ö ÀÖÀ½. µû¶ó¼­ requestManager¿¡¼­ °ü¸® ¾È ÇÔ.
+            GameInstance.Instance.Send_PACKET_CHECKIN_NOTI();   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ requestManagerï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½.
             if (UIInstance.Instance.GetPopup<UIAccessPopup>() != null)
             {
                 UIInstance.Instance.ClosePopupUI<UIAccessPopup>();
@@ -582,7 +513,7 @@ namespace stanworld
         }
 
         /// <summary>
-        /// ÆÄÆ¼·ë Á¶ÀÎÇÒ ¶§, ¼­¹ö·ÎºÎÅÍ ÇÊ¿äÇÑ ÆÐÅ¶À» ¸ðµÎ ¹ÞÀº ÈÄ ±× Á¤º¸µé·Î »óÅÂ¸¦ ÃÊ±âÈ­(½ºÆ®¸®¹Ö ½ºÅ©¸° µîµî)
+        /// ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ê±ï¿½È­(ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½)
         /// </summary>
         private void AfterPacketsReceived_JoinPartyroom()
         {
