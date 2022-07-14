@@ -81,7 +81,7 @@ namespace stanworld
                     PacketDataContainer = data;
                     if (PacketDataContainer.sendNextAfterResponse == false)
                     {
-                        if (PacketDataContainer.synchronized == true)    // ��Ŷ�� ������ ������ ��ٷ��� �� ���, �������� ó���� �ʿ���.
+                        if (PacketDataContainer.synchronized == true)
                         {
                             UIInstance.Instance.ShowUIWaitingForReceiveData();
                             waitingForServerResponse = true;
@@ -100,10 +100,7 @@ namespace stanworld
                                     UIInstance.Instance.CloseUIWaitingForReceiveData();
                                     throw new Exception("There is no FLAG_COMMAND in the packet!");
                                 }
-
-                                // SWPID�� �ִ� ��� SWPID�� �����ϰ�, SWPID�� ���� ��� FLAG_COMMAND ����
-                                // ������ ������ �������� ���������� SWPID�� ���� ��ȸ�ؼ� ��ٸ��� ��Ŷ�� �� ���� üũ��.
-                                // CheckWaitingPacketList() �޼ҵ� Ȯ��.
+                                
                                 if (packetData.Packet.ContainsKey(PacketFlagClass.STANWORLD_PACKET_ID))
                                 {
                                     WaitingPacketIDMap.Add(packetData.Packet.GetLong(PacketFlagClass.STANWORLD_PACKET_ID), packetData.listenerIndex);
@@ -140,7 +137,7 @@ namespace stanworld
                             }
                         }
                     }
-                    else    // dataHolder.sendNextAfterResponse == true�� ���, ������ synchronized == true�� ������.
+                    else    // In case of dataHolder.sendNextAfterResponse is true, we consider dataHolder.synchronized as true.
                     {
                         UIInstance.Instance.ShowUIWaitingForReceiveData();
                         waitingForServerResponse = true;
