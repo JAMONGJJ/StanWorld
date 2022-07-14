@@ -142,7 +142,7 @@ namespace stanworld
                         DoSetLastPosition();
                         BeforeLeaveRoom(currentRoomInfo.myRoomType);
                     }
-                    else    // �κ� ���� ����(LoginState, CreateCharacterState) -> No need to Leave room, Just Join room.
+                    else    // First time joining Lobby(LoginState, CreateCharacterState) -> No need to Leave room, Just Join room.
                     {
                         FirstJoinStanWorld();
                         LeaveRoomCompleted = true;
@@ -466,7 +466,7 @@ namespace stanworld
 
         private void AfterPacketsReceived_JoinLobby()
         {
-            GameInstance.Instance.Send_PACKET_CHECKIN_NOTI();   // �������� ��쿡 ���� ������ �� �� �� ����. ���� requestManager���� ���� �� ��.
+            GameInstance.Instance.Send_PACKET_CHECKIN_NOTI();   // There are some cases that server doesn't reply. So not handled by requestManager.
             if (UIInstance.Instance.GetPopup<UIAccessPopup>() != null)
             {
                 UIInstance.Instance.ClosePopupUI<UIAccessPopup>();
@@ -511,10 +511,7 @@ namespace stanworld
 
             PacketRequestContainer = RoomTransitionActionsContainer.JoinPartyroomActions.CopyData();
         }
-
-        /// <summary>
-        /// ��Ƽ�� ������ ��, �����κ��� �ʿ��� ��Ŷ�� ��� ���� �� �� ������� ���¸� �ʱ�ȭ(��Ʈ���� ��ũ�� ���)
-        /// </summary>
+        
         private void AfterPacketsReceived_JoinPartyroom()
         {
             PartyMaister.PartyManagers.Partyroom.OpenPartyroomControl();
