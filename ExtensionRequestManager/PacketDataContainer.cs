@@ -66,7 +66,6 @@ namespace stanworld
                 PacketList = new Queue<PacketData>();
             }
 
-            // 여러 패킷이 같은 설정값을 가질 때, 편하게 사용하기 위한 생성자
             public PacketDataContainer(params ISFSObject[] packets)
             {
                 synchronized = false;
@@ -80,7 +79,6 @@ namespace stanworld
                 }
             }
 
-            // 여러 패킷이 같은 설정값을 가질 때, 편하게 사용하기 위한 생성자
             public PacketDataContainer(int listenerIndex, bool toZone, params ISFSObject[] packets)
             {
                 synchronized = false;
